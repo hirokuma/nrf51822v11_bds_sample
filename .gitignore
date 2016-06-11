@@ -33,3 +33,5 @@
 
 # Bfuild files
 _build/
+.cproject
+.project

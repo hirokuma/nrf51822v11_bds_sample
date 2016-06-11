@@ -55,10 +55,12 @@ static uint8_t write_encode(ble_read_write_service_write_t * p_write, uint8_t * 
  */
 static uint8_t write_decode(uint8_t data_len, uint8_t * p_data, ble_read_write_service_write_t * p_write_val)
 {
-    uint8_t pos = 0;
-    pos += bds_uint8_array_decode((data_len-pos), &p_data[pos], &p_write_val->data); 
-
-    return pos;
+    //uint8_t pos = 0;
+    //pos += bds_uint8_array_decode((data_len-pos), &p_data[pos], &p_write_val->data); 
+    //return pos;
+    p_write_val->data.p_data = p_data;
+    p_write_val->data.size = data_len;
+    return data_len;
 } 
 /**@brief Function for encoding WwR.
  *
@@ -84,10 +86,12 @@ static uint8_t wwr_encode(ble_read_write_service_wwr_t * p_wwr, uint8_t * encode
  */
 static uint8_t wwr_decode(uint8_t data_len, uint8_t * p_data, ble_read_write_service_wwr_t * p_write_val)
 {
-    uint8_t pos = 0;
-    pos += bds_uint8_array_decode((data_len-pos), &p_data[pos], &p_write_val->data); 
-
-    return pos;
+//    uint8_t pos = 0;
+//    pos += bds_uint8_array_decode((data_len-pos), &p_data[pos], &p_write_val->data); 
+//    return pos;
+    p_write_val->data.p_data = p_data;
+    p_write_val->data.size = data_len;
+    return data_len;
 } 
 /**@brief Function for encoding Notify.
  *
