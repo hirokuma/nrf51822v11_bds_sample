@@ -350,7 +350,7 @@ uint32_t ble_read_write_service_init(ble_read_write_service_t * p_read_write_ser
     ble_add_char_params_t add_notify_params;
     memset(&add_notify_params, 0, sizeof(add_notify_params));
     
-    add_notify_params.uuid                = 0xA1A2;
+    add_notify_params.uuid                = 0x0013;
     add_notify_params.uuid_type           = ble_uuid.type; 
     add_notify_params.max_len             = MAX_NOTIFY_LEN;
     add_notify_params.init_len            = notify_encode(&notify_initial_value, notify_encoded_value);
