@@ -19,6 +19,15 @@ typedef enum
     BLE_READ_WRITE_SERVICE_WRITE_EVT_NOTIFICATION_ENABLED,  /**< Write value notification enabled event. */
     BLE_READ_WRITE_SERVICE_WRITE_EVT_NOTIFICATION_DISABLED, /**< Write value notification disabled event. */
     BLE_READ_WRITE_SERVICE_WRITE_EVT_WRITE, /**< Write write event. */
+    BLE_READ_WRITE_SERVICE_WWR_EVT_NOTIFICATION_ENABLED,  /**< WwR value notification enabled event. */
+    BLE_READ_WRITE_SERVICE_WWR_EVT_NOTIFICATION_DISABLED, /**< WwR value notification disabled event. */
+    BLE_READ_WRITE_SERVICE_WWR_EVT_WRITE, /**< WwR write event. */
+    BLE_READ_WRITE_SERVICE_NOTIFY_EVT_NOTIFICATION_ENABLED,  /**< Notify value notification enabled event. */
+    BLE_READ_WRITE_SERVICE_NOTIFY_EVT_NOTIFICATION_DISABLED, /**< Notify value notification disabled event. */
+    BLE_READ_WRITE_SERVICE_NOTIFY_EVT_CCCD_WRITE, /**< Notify CCCD write event. */
+    BLE_READ_WRITE_SERVICE_INDICATE_EVT_NOTIFICATION_ENABLED,  /**< Indicate value notification enabled event. */
+    BLE_READ_WRITE_SERVICE_INDICATE_EVT_NOTIFICATION_DISABLED, /**< Indicate value notification disabled event. */
+    BLE_READ_WRITE_SERVICE_INDICATE_EVT_CCCD_WRITE, /**< Indicate CCCD write event. */
 } ble_read_write_service_evt_type_t;
 
 // Forward declaration of the ble_read_write_service_t type.
@@ -41,6 +50,21 @@ typedef struct
 {
     uint8_array_t data;
 } ble_read_write_service_write_t;
+/**@brief WwR structure. */
+typedef struct
+{
+    uint8_array_t data;
+} ble_read_write_service_wwr_t;
+/**@brief Notify structure. */
+typedef struct
+{
+    uint8_array_t data;
+} ble_read_write_service_notify_t;
+/**@brief Indicate structure. */
+typedef struct
+{
+    uint8_array_t data;
+} ble_read_write_service_indicate_t;
 
 /**@brief Read Write Service Service event. */
 typedef struct
@@ -49,6 +73,7 @@ typedef struct
     union {
         uint16_t cccd_value; /**< Holds decoded data in Notify and Indicate event handler. */
         ble_read_write_service_write_t write; /**< Holds decoded data in Write event handler. */
+        ble_read_write_service_wwr_t wwr; /**< Holds decoded data in Write event handler. */
     } params;
 } ble_read_write_service_evt_t;
 
@@ -61,6 +86,9 @@ typedef struct
     ble_read_write_service_evt_handler_t     evt_handler; /**< Event handler to be called for handling events in the Read Write Service Service. */
     ble_read_write_service_read_t ble_read_write_service_read_initial_value; /**< If not NULL, initial value of the Read characteristic. */ 
     ble_read_write_service_write_t ble_read_write_service_write_initial_value; /**< If not NULL, initial value of the Write characteristic. */ 
+    ble_read_write_service_wwr_t ble_read_write_service_wwr_initial_value; /**< If not NULL, initial value of the WwR characteristic. */ 
+    ble_read_write_service_notify_t ble_read_write_service_notify_initial_value; /**< If not NULL, initial value of the Notify characteristic. */ 
+    ble_read_write_service_indicate_t ble_read_write_service_indicate_initial_value; /**< If not NULL, initial value of the Indicate characteristic. */ 
 } ble_read_write_service_init_t;
 
 /**@brief Read Write Service Service structure. This contains various status information for the service.*/
@@ -70,6 +98,9 @@ struct ble_read_write_service_s
     uint16_t service_handle; /**< Handle of Read Write Service Service (as provided by the BLE stack). */
     ble_gatts_char_handles_t read_handles; /**< Handles related to the Read characteristic. */
     ble_gatts_char_handles_t write_handles; /**< Handles related to the Write characteristic. */
+    ble_gatts_char_handles_t wwr_handles; /**< Handles related to the WwR characteristic. */
+    ble_gatts_char_handles_t notify_handles; /**< Handles related to the Notify characteristic. */
+    ble_gatts_char_handles_t indicate_handles; /**< Handles related to the Indicate characteristic. */
     uint16_t conn_handle; /**< Handle of the current connection (as provided by the BLE stack, is BLE_CONN_HANDLE_INVALID if not in a connection). */
 };
 
@@ -99,5 +130,57 @@ void ble_read_write_service_on_ble_evt(ble_read_write_service_t * p_read_write_s
  * @return      NRF_SUCCESS on success, otherwise an error code.
  */
 uint32_t ble_read_write_service_read_set(ble_read_write_service_t * p_read_write_service, ble_read_write_service_read_t * p_read);
+
+/**@brief Function for setting the Notify.
+ *
+ * @details Sets a new value of the Notify characteristic. The new value will be sent
+ *          to the client the next time the client reads the Notify characteristic.
+ *          This function is only generated if the characteristic's Read property is not 'Excluded'.
+ *
+ * @param[in]   p_read_write_service                 Read Write Service Service structure.
+ * @param[in]   p_notify  New Notify.
+ *
+ * @return      NRF_SUCCESS on success, otherwise an error code.
+ */
+uint32_t ble_read_write_service_notify_set(ble_read_write_service_t * p_read_write_service, ble_read_write_service_notify_t * p_notify);
+
+/**@brief Function for sending the Notify.
+ *
+ * @details The application calls this function after having performed a notify.
+ *          The notify data is encoded and sent to the client.
+ *          This function is only generated if the characteristic's Notify or Indicate property is not 'Excluded'.
+ *
+ * @param[in]   p_read_write_service                    Read Write Service Service structure.
+ * @param[in]   p_notify               New notify.
+ *
+ * @return      NRF_SUCCESS on success, otherwise an error code.
+ */
+uint32_t ble_read_write_service_notify_send(ble_read_write_service_t * p_read_write_service, ble_read_write_service_notify_t * p_notify);
+
+/**@brief Function for setting the Indicate.
+ *
+ * @details Sets a new value of the Indicate characteristic. The new value will be sent
+ *          to the client the next time the client reads the Indicate characteristic.
+ *          This function is only generated if the characteristic's Read property is not 'Excluded'.
+ *
+ * @param[in]   p_read_write_service                 Read Write Service Service structure.
+ * @param[in]   p_indicate  New Indicate.
+ *
+ * @return      NRF_SUCCESS on success, otherwise an error code.
+ */
+uint32_t ble_read_write_service_indicate_set(ble_read_write_service_t * p_read_write_service, ble_read_write_service_indicate_t * p_indicate);
+
+/**@brief Function for sending the Indicate.
+ *
+ * @details The application calls this function after having performed a indicate.
+ *          The indicate data is encoded and sent to the client.
+ *          This function is only generated if the characteristic's Notify or Indicate property is not 'Excluded'.
+ *
+ * @param[in]   p_read_write_service                    Read Write Service Service structure.
+ * @param[in]   p_indicate               New indicate.
+ *
+ * @return      NRF_SUCCESS on success, otherwise an error code.
+ */
+uint32_t ble_read_write_service_indicate_send(ble_read_write_service_t * p_read_write_service, ble_read_write_service_indicate_t * p_indicate);
 
 #endif //_BLE_READ_WRITE_SERVICE_H__

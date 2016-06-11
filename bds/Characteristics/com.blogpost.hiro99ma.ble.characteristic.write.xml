@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Characteristic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://schemas.bluetooth.org/Documents/characteristic.xsd"
+  type="com.blogpost.hiro99ma.ble.characteristic.write"
+  uuid="b7b80011-d7b8-47b3-8f93-773756b46f9a"
+  name="Write">
+  <Value>
+    <Field
+      name="data">
+      <Requirement>Mandatory</Requirement>
+      <Format>uint8[]</Format>
+      <Unit>org.bluetooth.unit.unitless</Unit>
+      <Repeated>false</Repeated>
+    </Field>
+  </Value>
+</Characteristic>

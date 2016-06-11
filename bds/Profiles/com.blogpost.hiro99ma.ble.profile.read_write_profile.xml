@@ -2,7 +2,7 @@
 <Profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="http://schemas.bluetooth.org/Documents/profile.xsd"
   name="Read Write Profile"
-  type="com.blogpost.hiro99ma.profile.read_write_profile"
+  type="com.blogpost.hiro99ma.ble.profile.read_write_profile"
   uuid="b7b827b5-d7b8-47b3-8f93-773756b46f9a">
   <InformativeText>
     <Abstract />
@@ -13,15 +13,27 @@
   <Role
     name="New Profile Service">
     <Service
-      type="com.blogpost.hiro99ma.service.read_write_service">
+      type="com.blogpost.hiro99ma.ble.service.read_write_service">
       <Declaration>Primary</Declaration>
       <Requirement>Mandatory</Requirement>
       <Characteristic
-        type="com.blogpost.hiro99ma.characteristic.read">
+        type="com.blogpost.hiro99ma.ble.characteristic.read">
         <Requirement>Mandatory</Requirement>
       </Characteristic>
       <Characteristic
-        type="com.blogpost.hiro99ma.characteristic.write">
+        type="com.blogpost.hiro99ma.ble.characteristic.write">
+        <Requirement>Mandatory</Requirement>
+      </Characteristic>
+      <Characteristic
+        type="com.blogpost.hiro99ma.ble.characteristic.wwr">
+        <Requirement>Mandatory</Requirement>
+      </Characteristic>
+      <Characteristic
+        type="com.blogpost.hiro99ma.ble.characteristic.notify">
+        <Requirement>Mandatory</Requirement>
+      </Characteristic>
+      <Characteristic
+        type="com.blogpost.hiro99ma.ble.characteristic.indicate">
         <Requirement>Mandatory</Requirement>
       </Characteristic>
     </Service>
@@ -29,7 +41,7 @@
   <Role
     name="New Profile Client">
     <Client
-      type="com.blogpost.hiro99ma.service.read_write_service">
+      type="com.blogpost.hiro99ma.ble.service.read_write_service">
       <Requirement>Mandatory</Requirement>
     </Client>
   </Role>

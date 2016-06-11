@@ -9,6 +9,9 @@ static ble_read_write_service_t    m_read_write_service;
 
 uint8_t m_read_write_service_read_initial_value_data_arr[1]; 
 uint8_t m_read_write_service_write_initial_value_data_arr[1]; 
+uint8_t m_read_write_service_wwr_initial_value_data_arr[1]; 
+uint8_t m_read_write_service_notify_initial_value_data_arr[1]; 
+uint8_t m_read_write_service_indicate_initial_value_data_arr[1]; 
 
 
 /**@brief Function for handling the Read Write Service events.
@@ -25,6 +28,27 @@ static void on_read_write_service_evt(ble_read_write_service_t * p_read_write_se
     { 
         case BLE_READ_WRITE_SERVICE_WRITE_EVT_WRITE:
             app_trace_log("[Bluetooth_IF]: READ_WRITE_SERVICE_WRITE evt WRITE. \r\n");
+            break; 
+        case BLE_READ_WRITE_SERVICE_WWR_EVT_WRITE:
+            app_trace_log("[Bluetooth_IF]: READ_WRITE_SERVICE_WWR evt WRITE. \r\n");
+            break; 
+        case BLE_READ_WRITE_SERVICE_NOTIFY_EVT_NOTIFICATION_ENABLED:
+            app_trace_log("[Bluetooth_IF]: READ_WRITE_SERVICE_NOTIFY evt NOTIFICATION_ENABLED. \r\n");
+            break;
+        case BLE_READ_WRITE_SERVICE_NOTIFY_EVT_NOTIFICATION_DISABLED:
+            app_trace_log("[Bluetooth_IF]: READ_WRITE_SERVICE_NOTIFY evt NOTIFICATION_DISABLED. \r\n");
+            break;
+        case BLE_READ_WRITE_SERVICE_NOTIFY_EVT_CCCD_WRITE:
+            app_trace_log("[Bluetooth_IF]: READ_WRITE_SERVICE_NOTIFY evt CCCD_WRITE. \r\n");
+            break; 
+        case BLE_READ_WRITE_SERVICE_INDICATE_EVT_NOTIFICATION_ENABLED:
+            app_trace_log("[Bluetooth_IF]: READ_WRITE_SERVICE_INDICATE evt NOTIFICATION_ENABLED. \r\n");
+            break;
+        case BLE_READ_WRITE_SERVICE_INDICATE_EVT_NOTIFICATION_DISABLED:
+            app_trace_log("[Bluetooth_IF]: READ_WRITE_SERVICE_INDICATE evt NOTIFICATION_DISABLED. \r\n");
+            break;
+        case BLE_READ_WRITE_SERVICE_INDICATE_EVT_CCCD_WRITE:
+            app_trace_log("[Bluetooth_IF]: READ_WRITE_SERVICE_INDICATE evt CCCD_WRITE. \r\n");
             break; 
         default:
             // No implementation needed.
@@ -52,6 +76,12 @@ uint32_t bluetooth_init(void)
     read_write_service_init.ble_read_write_service_read_initial_value.data.p_data = m_read_write_service_read_initial_value_data_arr; 
     read_write_service_init.ble_read_write_service_write_initial_value.data.size = 1;
     read_write_service_init.ble_read_write_service_write_initial_value.data.p_data = m_read_write_service_write_initial_value_data_arr; 
+    read_write_service_init.ble_read_write_service_wwr_initial_value.data.size = 1;
+    read_write_service_init.ble_read_write_service_wwr_initial_value.data.p_data = m_read_write_service_wwr_initial_value_data_arr; 
+    read_write_service_init.ble_read_write_service_notify_initial_value.data.size = 1;
+    read_write_service_init.ble_read_write_service_notify_initial_value.data.p_data = m_read_write_service_notify_initial_value_data_arr; 
+    read_write_service_init.ble_read_write_service_indicate_initial_value.data.size = 1;
+    read_write_service_init.ble_read_write_service_indicate_initial_value.data.p_data = m_read_write_service_indicate_initial_value_data_arr; 
 
     err_code = ble_read_write_service_init(&m_read_write_service, &read_write_service_init);
     if (err_code != NRF_SUCCESS)

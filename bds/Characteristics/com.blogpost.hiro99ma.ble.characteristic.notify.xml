@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Characteristic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="http://schemas.bluetooth.org/Documents/characteristic.xsd"
-  type="com.blogpost.hiro99ma.characteristic.read"
-  uuid="b7b820dd-d7b8-47b3-8f93-773756b46f9a"
-  name="Read">
+  type="com.blogpost.hiro99ma.ble.characteristic.notify"
+  uuid="b7b8a1a2-d7b8-47b3-8f93-773756b46f9a"
+  name="Notify">
   <Value>
     <Field
       name="data">
